@@ -14,13 +14,22 @@
 
 from qwen_agent.agents import Assistant
 from qwen_agent.gui import WebUI
+from qwen_agent.utils.output_beautify import typewriter_print
 
 
 def test():
-    bot = Assistant(llm={'model': 'qwen-plus-latest'})
-    messages = [{'role': 'user', 'content': [{'text': '介绍图一'}, {'file': 'https://arxiv.org/pdf/1706.03762.pdf'}]}]
+    llm_cfg = {
+        'model': 'qwen3:8b',
+        'api_key': 'ollama',
+        'model_server': 'http://127.0.0.1:11434/v1',
+    }
+    bot = Assistant(llm=llm_cfg)
+    messages = [{'role': 'user', 'content': [{'text': '序号为 4 的诗句表达了什么心情'}, {'file': '/Users/wangxinyu/Project/python_project/Qwen-Agent/examples/resource/poem.pdf'}]}]
+    # for rsp in bot.run(messages):
+    #     print(rsp)
+    response_plain_text = ''
     for rsp in bot.run(messages):
-        print(rsp)
+        response_plain_text = typewriter_print(rsp, response_plain_text)
 
 
 def app_gui():
@@ -42,5 +51,5 @@ def app_gui():
 
 
 if __name__ == '__main__':
-    # test()
-    app_gui()
+    test()
+    #app_gui()
