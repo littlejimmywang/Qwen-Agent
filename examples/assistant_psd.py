@@ -2,7 +2,7 @@
 import os  # noqa
 
 from qwen_agent.agents import Assistant
-from qwen_agent.gui import WebUI
+#from qwen_agent.gui import WebUI
 from qwen_agent.utils.output_beautify import typewriter_print
 
 
@@ -43,22 +43,26 @@ def init_agent_service():
     #         # 'thought_in_content': True,
     #     },
     # }
+    # tools = [
+    #     {
+    #         'mcpServers': {  # You can specify the MCP configuration file
+    #             # 'time': {
+    #             #     'command': 'uvx',
+    #             #     'args': ['mcp-server-time', '--local-timezone=Asia/Shanghai']
+    #             # },
+    #             # 'fetch': {
+    #             #     'command': 'uvx',
+    #             #     'args': ['mcp-server-fetch']
+    #             # },
+    #             'BugLocator': {
+    #                'url': 'http://127.0.0.1:1998/sse'
+    #             }
+    #         }
+    #     },
+    #     'code_interpreter',  # Built-in tools
+    # ]
     tools = [
-        {
-            'mcpServers': {  # You can specify the MCP configuration file
-                'time': {
-                    'command': 'uvx',
-                    'args': ['mcp-server-time', '--local-timezone=Asia/Shanghai']
-                },
-                'fetch': {
-                    'command': 'uvx',
-                    'args': ['mcp-server-fetch']
-                },
-                'PsdMcpServer': {
-                   'url': 'http://127.0.0.1:1998/sse'
-                }
-            }
-        },
+        'retrieval', # qwen_agent.tools.retrieval.Retrieval
         'code_interpreter',  # Built-in tools
     ]
     bot = Assistant(llm=llm_cfg,
@@ -96,22 +100,22 @@ def app_tui():
         messages.extend(response)
 
 
-def app_gui():
-    # Define the agent
-    bot = init_agent_service()
-    chatbot_config = {
-        'prompt.suggestions': [
-            'What time is it?',
-            'https://github.com/orgs/QwenLM/repositories Extract markdown content of this page, then draw a bar chart to display the number of stars.'
-        ]
-    }
-    WebUI(
-        bot,
-        chatbot_config=chatbot_config,
-    ).run()
+# def app_gui():
+#     # Define the agent
+#     bot = init_agent_service()
+#     chatbot_config = {
+#         'prompt.suggestions': [
+#             'What time is it?',
+#             'https://github.com/orgs/QwenLM/repositories Extract markdown content of this page, then draw a bar chart to display the number of stars.'
+#         ]
+#     }
+#     WebUI(
+#         bot,
+#         chatbot_config=chatbot_config,
+#     ).run()
 
 
 if __name__ == '__main__':
     #test()
-    #app_tui()
-    app_gui()
+    app_tui()
+    #app_gui()
